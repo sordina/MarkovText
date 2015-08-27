@@ -8,7 +8,7 @@ import Safe
 import System.Random
 import System.IO
 
-type F = RandomGen g => Int -> Int -> String -> g -> String
+type F = RandomGen g => Int -> Int -> Int -> String -> g -> String
 
 main :: IO ()
 main = getArgs >>= args mChars
@@ -24,17 +24,18 @@ args _ _                  = help
 
 start :: F -> Maybe Int -> Maybe Int -> IO ()
 start f (Just con) (Just out) = do
-  g <- newStdGen
+  g <- getStdGen
   i <- getContents
-  putStrLn $ f out con i g
+  s <- randomRIO (100,2000)
+  putStrLn $ f s out con i g
 
 start _ _ _ = help
 
 mChars :: F
-mChars out con i g = take out $ run con i (con * 10) g
+mChars start out con i g = take out $ drop start $ run con i (start + con * 10) g
 
 mWords :: F
-mWords out con i g = unwords $ take out $ run con (words i) (con * 10) g
+mWords start out con i g = unwords $ take out $ drop start $ run con (words i) (start + con * 10) g
 
 help :: IO ()
 help = hPutStrLn stderr "Usage: <input> | markov [--help | -h] [--words | -w] <output-length> [context-length]"
