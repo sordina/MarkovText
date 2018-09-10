@@ -8,7 +8,7 @@ import Safe
 import System.Random
 import System.IO
 
-type F = RandomGen g => Int -> Int -> Int -> String -> g -> String
+type F = Int -> Int -> Int -> String -> StdGen -> String
 
 main :: IO ()
 main = getArgs >>= args mChars
