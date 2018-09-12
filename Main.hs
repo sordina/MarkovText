@@ -32,10 +32,10 @@ start f (Just con) (Just out) = do
 start _ _ _ = help
 
 mChars :: F
-mChars start out con i g = take out $ drop start $ run con i (start + con * 10) g
+mChars begin out con i g = take out $ drop begin $ run con i (begin + con * 10) g
 
 mWords :: F
-mWords start out con i g = unwords $ take out $ drop start $ run con (words i) (start + con * 10) g
+mWords begin out con i g = unwords $ take out $ drop begin $ run con (words i) (begin + con * 10) g
 
 help :: IO ()
 help = hPutStrLn stderr "Usage: <input> | markov [--help | -h] [--words | -w] <output-length> [context-length]"
